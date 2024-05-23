@@ -1,0 +1,584 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manual Charts-Line</title>
+    <link rel="icon" href="{% static 'logo.png' %}" alt="Logo" style="height:500px" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color:#1c0522;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body::-webkit-scrollbar {
+            width: 0.5em;
+        }
+        
+        body::-webkit-scrollbar-thumb {
+            background-color: #555;
+        }
+        
+        .navbar{
+            position:fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem 1rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index:1100;
+        }
+        
+        .logo {
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        ul li {
+            list-style: none;
+            margin-left: 20px;
+        }
+        
+        ul li a {
+            text-decoration: none;
+            padding: 6px 15px;
+            color: #fff;
+            border-radius: 20px;
+        }
+        
+        ul li a:hover,
+        ul li a.active {
+            background: #fff;
+            color: #2b1055;
+        }
+        
+        .logo-img {
+            width: 140px;
+            height: 110px; 
+            vertical-align: middle; 
+            transition: transform 0.5s ease-in-out; 
+        }
+        
+        .logo-container {
+            position: relative;
+            margin-left: 60px; /* Adjust margin-left as needed */
+        }
+        
+        #indicator-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #ddd;
+            z-index: 9999;
+            overflow:hidden;
+        }
+        
+        #indicator {
+            height: 100%;
+            width: 0;
+            background-color: #4CAF50;
+            overflow:hidden;
+        }
+        
+        #btn {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 30px;
+            border-radius: 40px;
+            background: #fff;
+            color: #2b1055;
+            font-size: 1.5em;
+            z-index: 9;
+            transform: translateY(-1);
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            border-radius: 8px;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .card {
+            margin-top: 20%; /* Adjust margin-top as needed */
+        }
+        
+        .card-body {
+            padding: 0px;
+            width:400px;
+            margin-top:10%;
+
+        }
+        .col-md-6 {
+            height:auto;
+            
+        }
+        .form-control {
+            width: calc(100% - 22px);
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        .btn-primary {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto; /* Center the container */
+            padding: 3px;
+        }
+
+        form {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color:black;
+        }
+        
+        .card.chart-container {
+            height:auto; /* Adjust height as needed */
+            width:auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card.chart-container .card-body {
+            padding: 0; /* Remove padding */
+        }
+        
+        img.img-fluid {
+            max-width: 100%; /* Ensure image fills the card body */
+            height: auto;
+        }
+
+        h3 {
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: black;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        footer {
+            background-color: #1c0522;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+
+        #video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Place the video behind other elements */
+        }
+        .wrapper{
+            width: 490px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            color: #fff;
+            border-radius: 10px;
+            padding: 30px 40px;
+        }
+        .wrapper2{
+            width:55%;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            color: #fff;
+            border-radius: 10px;
+            padding: 30px 40px;
+        }
+        .wrapper h1{
+            font-size: 36px;
+            text-align: center;
+        }
+        .wrapper .input-box {
+            position:relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+        .wrapper .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: #fff;
+            padding: 20px 45px 20px 20px;
+        }
+        .wrapper .input-box input::placeholder {
+            color: #fff;
+        }
+        .wrapper .input-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            visibility: visible;
+        }
+        .wrapper .remember-forget {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            margin: -15px 0 15px;
+            margin-top:10px;
+        }
+        .wrapper .remember-forget label input {
+            accent-color: #fff;
+            margin-right: 3px;
+        }
+        .wrapper .remember-forget a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .wrapper .remember-forget a:hover {
+            text-decoration: underline;
+        }
+        .wrapper .btn {
+            width: 100%;
+            height: 45px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+        .wrapper .register-link {
+            font-size: 14.5px;
+            text-align: center;
+            margin: 20px 0 15px;
+        }
+        .wrapper .register-link p a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .wrapper .register-link p a:hover {
+            text-decoration: underline;
+        }
+        .media-options a{
+            display:inline-flex;
+            justify-content:center;
+            align-items:center;
+            width:100%;
+            height:50px;
+            background:transparent;
+            border:2px solid #ffff;
+            margin:10px 0;
+            box-shadow:0 2px 5px rgba(0,0,0,.2);
+            border-radius:40px;
+            color:#fff;
+            text-decoration:none;
+        }
+        .media-options a i{
+            font-size:22px;
+            margin:0 8px 1.5px 0;
+        }
+        .media-options a span{
+            font-size:16px;
+            font-weight:500;
+        }
+        .media-options{
+         display:flex;
+         align-items:center;
+         flex-direction:column;
+        }
+        @keyframes slideToLeft {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        
+        @keyframes slideFromRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        .input-box input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .input-box input[type="text"]::placeholder {
+            color: black;
+        }
+        #form2 {
+            display: none;
+        }
+        #form3 {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="indicator-container">
+        <div id="indicator"></div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home2' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" class="logo-img" id="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home2' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sec">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Charts
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- Dropdown menu for Manual Charts -->
+                        <a class="dropdown-item dropdown-toggle" href="#" id="manualDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manual Charts</a>
+                        <div class="dropdown-menu" aria-labelledby="manualDropdown">
+                            <!-- Links to different manual charts -->
+                            <a class="dropdown-item" href="{% url 'Line' %}">Line Chart</a>
+                            <a class="dropdown-item" href="{% url 'bar' %}">Bar Chart</a>
+                            <a class="dropdown-item" href="{% url 'pie' %}">Pie Chart</a>
+                        </div>
+                        <!-- Link to Random Charts -->
+                        <a class="dropdown-item" href="{% url 'charts' %}">Random Charts</a>
+                        <a class="dropdown-item" href="{% url 'csvchart' %}">CSV Charts</a>
+                        <a class="dropdown-item" href="{% url 'a_c' %}">All Charts</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br><br><br><br><br><br><br><br>
+    <center>
+    <div class="wrapper" id="form1">
+        <form action="insertview2">
+            <center>
+                    <h3>Enter Name for X axis: </h3>
+                    <input type="text" name="n1">
+                    <h3>Enter Name for Y axis: </h3>
+                    <input type="text" name="n2">
+                    <h3>Enter Name for the Chart: </h3>
+                    <input type="text" name="n3">
+                    <h3>Enter Color for the Line Chart: </h3>
+                    <input type="color" name="n4"><br><br>
+                    <input type="submit" value="Insert" >
+                <button id="showForm2Button">Next</button>
+            </center>
+        </form>
+    </div>
+    <h4 style="color:white;">{{msg1}}</h4>
+    <div class="wrapper" id="form2">
+        <form  action="insertview">
+            <center>
+                <h3>Enter Object Name: </h3>
+                <input type="text" name="n1">
+                <h3>Enter Object Price: </h3>
+                <input type="text" name="n2">
+                <input type="submit" value="Insert" id="insert">
+                <button id="showForm3Button">Next</button>
+            </center>
+        </form>
+    </div>
+    <h4 style="color:white">{{ msg }}</h4>
+</center>
+<center>
+    <div class="wrapper2" id="form3">
+        <form action="plot_view">
+            <center>
+                <input type="submit" value="Plot">
+            </center>
+        </form>
+        <br>
+        {% block content %}
+        {% if chart %}
+            <img src="data:image/png;base64, {{ chart|safe }}">
+        {% endif %}
+        {% endblock content %}
+        <br><br>
+        <form action="download_view">
+            <center>
+                <input type="submit" value="downlaod image">
+            </center>
+        </form>
+    </div>
+</center>
+<br>
+    <video autoplay muted loop id="video-bg">
+     <source src="{% static 'video1.mp4' %}" type="video/mp4">
+    </video>
+    <footer>
+        <img src="{% static 'logo.png' %}" alt="My Visual Hub Logo" />
+        <p>&copy; 2024 My Visual Hub. All rights reserved.</p>
+      </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form1 = document.getElementById("form1");
+            const form2 = document.getElementById("form2");
+            const form3 = document.getElementById("form3");
+            const showForm2Button = document.getElementById("showForm2Button");
+            const showForm3Button = document.getElementById("showForm3Button");
+    
+            showForm2Button.addEventListener('click', function(e) {
+                e.preventDefault();
+                form1.style.animation = "slideToLeft 0.5s forwards";
+                form2.style.animation = "slideFromRight 0.5s forwards";
+                form2.style.display = "block";
+                form1.style.display = "none";
+    
+                // Remove animation after it's finished
+                setTimeout(function() {
+                    form1.style.animation = "";
+                }, 500);
+            });
+            showForm3Button.addEventListener('click', function(e) {
+                e.preventDefault();
+                form2.style.animation = "slideToLeft 0.5s forwards";
+                form3.style.animation = "slideFromRight 0.5s forwards";
+                form3.style.display = "block";
+                form2.style.display = "none";
+    
+                // Remove animation after it's finished
+                setTimeout(function() {
+                    form2.style.animation = "";
+                }, 500);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('scroll', function () {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+
+            document.getElementById('indicator').style.width = scrollPercentage + '%';
+        });
+    </script>
+
+</body>
+</html>

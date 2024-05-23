@@ -1,0 +1,304 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="icon" href="{% static 'logo.png' %}" alt="Logo" class="logo-img" style="height:500px" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: 250%;
+            background-position: center;
+            overflow: hidden;
+        }
+        #video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Place the video behind other elements */
+        }
+        .wrapper{
+            width: 420px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            color: #fff;
+            border-radius: 10px;
+            padding: 30px 40px;
+        }
+        .wrapper h1{
+            font-size: 36px;
+            text-align: center;
+        }
+        .wrapper .input-box {
+            position:relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+        .wrapper .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: #fff;
+            padding: 20px 45px 20px 20px;
+        }
+        .wrapper .input-box input::placeholder {
+            color: #fff;
+        }
+        .wrapper .input-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            visibility: visible;
+        }
+        .wrapper .remember-forget {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            margin: -15px 0 15px;
+            margin-top:10px;
+        }
+        .wrapper .remember-forget label input {
+            accent-color: #fff;
+            margin-right: 3px;
+        }
+        .wrapper .remember-forget a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .wrapper .remember-forget a:hover {
+            text-decoration: underline;
+        }
+        .wrapper .btn {
+            width: 100%;
+            height: 45px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+        .wrapper .register-link {
+            font-size: 14.5px;
+            text-align: center;
+            margin: 20px 0 15px;
+        }
+        .wrapper .register-link p a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .wrapper .register-link p a:hover {
+            text-decoration: underline;
+        }
+        .media-options a{
+            display:inline-flex;
+            justify-content:center;
+            align-items:center;
+            width:100%;
+            height:50px;
+            background:transparent;
+            border:2px solid #ffff;
+            margin:10px 0;
+            box-shadow:0 2px 5px rgba(0,0,0,.2);
+            border-radius:40px;
+            color:#fff;
+            text-decoration:none;
+        }
+        .media-options a i{
+            font-size:22px;
+            margin:0 8px 1.5px 0;
+        }
+        .media-options a span{
+            font-size:16px;
+            font-weight:500;
+        }
+        .media-options{
+         display:flex;
+         align-items:center;
+         flex-direction:column;
+        }
+        @keyframes slideToLeft {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        
+        @keyframes slideFromRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Initially hide register form */
+        #registerForm {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+        {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        <form id="loginForm"  method="post" action="{% url 'Login' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Username" required>
+                <i class="bi bi-person"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" required>
+                <i class="bi bi-lock"></i>
+            </div>
+            <div class="remember-forget">
+                <label><input type="checkbox">Remember Me</label>
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+            <div class="register-link">
+                <p>Don't have an account?
+                    <a href="#" id="showRegister">Register</a></p>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            {% comment %} <div class="media-options">
+                <a href="#">
+                    <i class="bi bi-google"></i>
+                    <span>Login with Google</span>
+                </a>
+                <a href="#">
+                    <i class="bi bi-facebook"></i>
+                    <span>Login with Facebook</span>
+                </a>
+            </div> {% endcomment %}
+        </form>
+        <form id="registerForm" method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <h1>Register</h1>
+            <div class="input-box">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-box">
+                <label for="email">Email</label>
+                <i class="bi bi-envelope-at"></i>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+                <label for="occupation">Occupation</label>
+                <input type="text" id="occupation" name="occupation" placeholder="Enter your occupation" required>
+            </div>
+            <div class="input-box">
+                <label for="username">Create a Username</label>
+                <i class="bi bi-person"></i>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="input-box">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <button type="submit" class="btn">Register</button>
+            <div class="register-link">
+                <p>Already have an account?
+                    <a href="#" id="showLogin">Login</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    <video autoplay muted loop id="video-bg">
+        <source src="{% static 'video1.mp4' %}" type="video/mp4">
+    </video>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const loginForm = document.getElementById("loginForm");
+            const registerForm = document.getElementById("registerForm");
+            const showRegisterLink = document.getElementById("showRegister");
+            const showLoginLink = document.getElementById("showLogin");
+    
+            showRegisterLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.animation = "slideToLeft 0.5s forwards";
+                registerForm.style.animation = "slideFromRight 0.5s forwards";
+                registerForm.style.display = "block";
+                loginForm.style.display = "none";
+    
+                // Remove animation after it's finished
+                setTimeout(function() {
+                    loginForm.style.animation = "";
+                }, 500);
+            });
+    
+            showLoginLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerForm.style.animation = "slideToLeft 0.5s forwards";
+                loginForm.style.animation = "slideFromRight 0.5s forwards";
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+    
+                // Remove animation after it's finished
+                setTimeout(function() {
+                    registerForm.style.animation = "";
+                }, 500);
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>

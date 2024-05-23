@@ -1,0 +1,441 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MyVisualHub</title>
+    <link rel="icon" href="{% static 'logo.png' %}" alt="Logo" style="height:500px" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+     <style>
+        .logo-img{
+            width: 140px;
+            height:110px; 
+            vertical-align: middle; 
+            margin-left: 60px;
+            transition: transform 0.5s ease-in-out; 
+        }
+        .logo-container {
+            position: relative;
+          }
+        .wave{
+            position:absolute;
+            top:95%;
+            bottom:0;
+            Left:0;
+            width:100%;
+            height:100px;
+            background: url('{% static "wave.png" %}');
+            background-size:1000px 100px;
+            animation:animate 4s ease-in-out infinite;
+            animation-delay:clac(var(--i)*0.25s);
+        }
+        .wave#wave1
+        {
+            z-index:1000;
+            opacity:1;
+            background-position-x:400px;
+        }
+        .wave#wave2
+        {
+            z-index:999;
+            opacity:0.5;
+            background-position-x:300px;
+        }
+        .wave#wave3
+        {
+            z-index:998;
+            opacity:0.2;
+            background-position-x:200px;
+        }
+        .wave#wave4
+        {
+            z-index:999;
+            opacity:0.7;
+            background-position-x:100px;
+        }
+        @keyframes animate
+        {
+            0%,100%
+            {
+                transform:translateY(0px);
+            }
+            50%
+            {
+                transform:translateY(10px);
+            }
+        }
+        .flip-card, .flip-card-click {
+            display: inline-block;
+            background-color:#1c0522;
+            width: 300px;
+            height: 300px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            border: 1px solid #f1f1f1;
+            perspective: 1000px;
+            border-radius: 5px;
+            }
+            .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.3s;
+            transform-style: preserve-3d;
+            border-radius: 5px;
+            }
+            .flip-card:hover .flip-card-inner,
+            .flip-card:focus .flip-card-inner,
+            .flip-card:focus-within .flip-card-inner,
+            .flip-card:active .flip-card-inner,
+            .flip-card-click:focus .flip-card-inner,
+            .flip-card-click:active .flip-card-inner,
+            .flip-card-click.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+            }
+            .flip-card-inner:focus {
+            outline: 5px solid #03c23c;
+            cursor: pointer;
+            }
+            .flip-card-inner:hover {
+            outline: 5px solid #0336c2;
+            cursor: pointer;
+            }
+            .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            border-radius: 5px;
+            }
+            .flip-card-front h2 {
+            color: white;
+            font-size: 16pt;
+            font-weight: 500;
+            padding: 10px;
+            }
+            .flip-card-front p, .flip-card-back p {
+            padding: 10px;
+            font-size: 16pt;
+            color: white;
+            }
+            .flip-card-front {
+            background-color: #18453b;
+            }
+            .flip-card-back {
+            background-color: #008183;
+            transform: rotateY(180deg);
+            }
+            .flip-card-front, .flip-card-back {
+            background-size: cover;
+            background-position: center;
+            }
+            #flip-card-1 .flip-card-front {
+            background-image: url('{% static "bar.jpg" %}');
+            }
+            
+            #flip-card-2 .flip-card-front {
+            background-image: url('{% static "line.png" %}');
+            background-color: white;
+            }
+            
+            #flip-card-3 .flip-card-front {
+            background-image: url('{% static "pie.png" %}');
+            background-color: white;
+            }
+            footer {
+                position:absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: #1c0522;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+            
+            footer img {
+                max-width: 100px;
+                margin-right: 10px;
+            }
+            
+            footer p {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 300;
+            }
+            
+            footer a {
+                color: #fff;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+            
+            footer a:hover {
+                color: #ff7f50; /* Change to your desired hover color */
+            }
+            
+            
+              @media only screen and (max-width: 768px) {
+                .navbar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 0.5rem 0.8rem; /* Adjusted padding for smaller screens */
+                }
+            
+                .logo {
+                    margin-right: 0;
+                    margin-bottom: 10px;
+                }
+            
+                ul {
+                    flex-direction: column;
+                    align-items: center;
+                    margin-right: 0; /* Remove margin for smaller screens */
+                }
+            
+                ul li {
+                    margin: 5px 0;
+                }
+            
+                .dropdown {
+                    display: block;
+                    position: static;
+                }
+            
+                .dropdown-content {
+                    position: static;
+                    display: none;
+                }
+            
+                .dropdown:hover .dropdown-content {
+                    display: block;
+                }
+            }
+            
+            
+     </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: linear-gradient(135deg, black, white);">
+        <a class="navbar-brand" href="{% url 'home2' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" class="logo-img" id="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% if message %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home2' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sec">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Charts
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- Dropdown menu for Manual Charts -->
+                        <a class="dropdown-item dropdown-toggle" href="#" id="manualDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manual Charts</a>
+                        <div class="dropdown-menu" aria-labelledby="manualDropdown">
+                            <!-- Links to different manual charts -->
+                            <a class="dropdown-item" href="{% url 'Line' %}">Line Chart</a>
+                            <a class="dropdown-item" href="{% url 'bar' %}">Bar Chart</a>
+                            <a class="dropdown-item" href="{% url 'pie' %}">Pie Chart</a>
+                        </div>
+                        <!-- Link to Random Charts -->
+                        <a class="dropdown-item" href="{% url 'charts' %}">Random Charts</a>
+                        <a class="dropdown-item" href="{% url 'csvchart' %}">CSV Charts</a>
+                        <a class="dropdown-item" href="{% url 'a_c' %}">All Charts</a>
+                    </div>
+                </li>
+                       
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+
+<div id="indicator-container">
+    <div id="indicator"></div>
+</div>
+
+    <section>
+        <video autoplay muted loop id="video-bg">
+            <source src="{% static 'video1.mp4' %}" type="video/mp4">
+        </video>
+        
+        <h2 id="text">My Visual Hub</h2>
+    </section>
+        <div class="wave" id="wave1" style="--i:1;"></div>
+        <div class="wave" id="wave2" style="--i:2;"></div>
+        <div class="wave" id="wave3" style="--i:3;"></div>
+        <div class="wave" id="wave4" style="--i:4;"></div>
+    <div class="sec" id="sec">
+        <h2 data-aos="fade-left">Create Stunning Charts with Ease</h2>
+        <p data-aos="fade-right" data-aos-duration="400">Welcome to our advanced chart generator website, where transforming your data into visually appealing charts is a breeze. 
+        Whether you're a data enthusiast, business professional, or student, our user-friendly platform empowers you to effortlessly design and customize a wide range of charts to convey your information with clarity and impact. 
+        Experience the simplicity of data visualization as our intuitive tools guide you through the process of creating dynamic charts that elevate your presentations, reports, and analyses. 
+        Explore a variety of chart types, customize colors and labels, and instantly generate downloadable images or embeddable code for seamless integration into your projects. 
+        Unlock the power of visual storytelling with our chart generator – your go-to tool for transforming data into meaningful insights.</p><br>
+    <h1 data-aos="fade-left" style="color:white">Manual Charts</h1><br>
+    <div class="container-fluid" style="background-color: #1c0522;">
+        <div id="card-container" style="display: flex; justify-content: space-around;">
+            <div class="flip-card" id="flip-card-1" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>BAR CHART</h2>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="flip-card" id="flip-card-2" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>LINE CHART</h2>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="flip-card" id="flip-card-3" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>PIE CHART</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="button-container" style="display: flex; justify-content: space-around;background-color: #1c0522;">
+    <button id="customize-button1" class="custom-btn btn-3"><span>Customize</span></button>
+    <button id="customize-button" class="custom-btn btn-3"><span>Customize</span></button>
+    <button id="customize-button2" class="custom-btn btn-3"><span>Customize</span></button>
+    </div>
+    <br><br>
+    <h1 data-aos="fade-left" style="color:white">Other Charts</h1><br>
+    <div class="container-fluid" style="background-color: #1c0522;">
+        <div id="card-container" style="display: flex; justify-content: space-around;">
+            <div class="flip-card" id="flip-card-1" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front" style="background-image:url('{% static "Random.png" %}')">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>RANDOM CHARTS</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card" id="flip-card-2" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front" style="background-image:url('{% static "csv.png" %}')">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>CSV CHARTS</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card" id="flip-card-3" data-aos="zoom-in" data-aos-duration="300" data-aos-offset:"200">
+                <div class="flip-card-inner" tabindex="0">
+                    <div class="flip-card-front" style="background-image:url('{% static "all.png" %}')">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>ALL CHARTS</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="button-container" style="display: flex; justify-content: space-around;background-color: #1c0522;">
+    <button onclick="window.location.href='{% url 'charts' %}'" class="custom-btn btn-3"><span>Customize</span></button>
+    <button onclick="window.location.href='{% url 'csvchart' %}'" class="custom-btn btn-3"><span>Customize</span></button>
+    <button onclick="window.location.href='{% url 'a_c' %}'" class="custom-btn btn-3"><span>Customize</span></button>
+    </div>
+    <br><br>
+    <footer>
+        <img src="{% static 'logo.png' %}" alt="My Visual Hub Logo" />
+        <p>&copy; 2024 My Visual Hub. All rights reserved.</p>
+      </footer>
+      <script>
+        window.addEventListener('load', function() {
+            var logo = document.getElementById('logo');
+            if (logo) {
+                logo.style.transform = 'scale(1.5) rotate(360deg)';
+                setTimeout(function() {
+                    logo.style.transform = 'scale(1.0) rotate(0deg) translateX(-50%)';
+                }, 1000);
+            }
+        });
+    </script>
+    <script>
+        let wave1 = document.getElementById('wave1');
+        let wave2 = document.getElementById('wave2');
+        let wave3 = document.getElementById('wave3');
+        let wave4 = document.getElementById('wave4');
+        window.addEventListener('scroll', function () {
+            let value= window.scrollY;
+            wave1.style.backgroundPositionX = 400 + value * 4  + 'px';
+            wave2.style.backgroundPositionX = 300 + value * -4 + 'px';
+            wave3.style.backgroundPositionX = 200 + value * 2  + 'px';
+            wave4.style.backgroundPositionX = 100 + value * -2 + 'px';
+        })
+    </script>
+    <script>
+        document.addEventListener('scroll', function () {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            document.getElementById('indicator').style.width = scrollPercentage + '%';
+        });
+    </script>
+    <script>
+    document.querySelectorAll('.flip-card-click .flip-card-inner').forEach(function(item) {  
+        item.addEventListener('keypress', function(evt) { if (evt.keyCode == 13 || evt.keyCode == 32) { item.click(); } });
+    });
+    // click to flip
+    document.querySelectorAll('.flip-card-click').forEach(function(item) { 
+        item.addEventListener('click', function () { this.classList.toggle('flipped');  });
+    });
+</script>
+<script>
+    var customizeButton = document.getElementById('customize-button');
+    customizeButton.addEventListener('click', function() {
+        window.location.href = "{% url 'Line' %}";});
+    var customizeButton1 = document.getElementById('customize-button1');
+    customizeButton1.addEventListener('click', function() {
+        window.location.href = "{% url 'bar' %}";});
+    var customizeButton2 = document.getElementById('customize-button2');
+    customizeButton2.addEventListener('click', function() {
+        window.location.href = "{% url 'pie' %}";});
+</script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+        AOS.init({
+            offset: 300,
+            duration: 300,
+        });
+        </script>
+</body>
+</html>
